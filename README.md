@@ -120,7 +120,7 @@ python main_cruw.py --config configs/cruw/config_record_cruw.yaml --test_all
 
 To train RECORD *online* model run:
 ```commandline
-python main_cruw_oi.py --config configs/cruw/config_recordoi_cruw.yaml --deterministic --test_all
+python main_cruw_oi.py --config configs/cruw/config_recordoi_cruw.yaml --test_all
 ```
 
 ##### CARRADA dataset

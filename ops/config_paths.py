@@ -3,7 +3,11 @@ import argparse
 import yaml
 
 
-def config_paths(configs_pth, backbone_pth, ckpt_pth, rod_pth, rod_data, carrada_pth):
+def config_paths(configs_pth, backbone_pth, ckpt_pth, rod_pth, rod_data, carrada_pth, docker):
+    if args.docker:
+        docker_flag = True
+    else:
+        docker_flag = False
     for dir in os.listdir(configs_pth):
         if dir == 'cruw':
             assert rod_pth is not None and rod_data is not None, \
@@ -15,6 +19,7 @@ def config_paths(configs_pth, backbone_pth, ckpt_pth, rod_pth, rod_data, carrada
                 tmp_config = yaml.load(open(cur_file_pth, 'r'), Loader=yaml.FullLoader)
                 # Update config
                 tmp_config['dataset_cfg']['base_root'] = rod_pth
+                tmp_config['dataset_cfg']['docker'] = docker_flag
                 tmp_config['dataset_cfg']['data_root'] = str(os.path.join(rod_pth, 'sequences'))
                 tmp_config['dataset_cfg']['anno_root'] = os.path.join(rod_pth, 'annotations')
                 tmp_config['dataset_cfg']['data_dir'] = rod_data
@@ -61,7 +66,11 @@ if __name__=='__main__':
     # CARRADA dataset
     parser.add_argument('--carrada_base_root', type=str, help='Path to CARRADA root folder')
 
+    # Docker
+    parser.add_argument('--docker', action='store_true')
+
     args = parser.parse_args()
     # Update configs
     config_paths(configs_pth=args.configs_path, backbone_pth=args.backbone_path, ckpt_pth=args.ckpt_path,
-                 rod_data=args.rod_data, rod_pth=args.rod_base_root, carrada_pth=args.carrada_base_root)
+                 rod_data=args.rod_data, rod_pth=args.rod_base_root, carrada_pth=args.carrada_base_root,
+                 docker=args.docker)

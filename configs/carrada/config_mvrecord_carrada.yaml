@@ -1,0 +1,36 @@
+version: 1.0
+
+dataset_cfg:
+  dataset_name: 'CARRADA'
+  warehouse: 'path_to_datasets/'
+  carrada: 'path_to_datasets/Carrada/'
+  weight_path: 'path_to_project/configs/carrada/'
+  project_path: 'path_to_project/'
+  annot_type: 'dense'
+  
+model_cfg:
+  name: 'MV-RECORD'
+  process_signal: true
+  w_size: 256
+  h_size: 256
+  nb_classes: 4
+  in_channels: 1
+  win_size: 5
+  backbone_pth: 'path_to_project/models/configs/mv_record.yaml'
+  width_mult: 1.0
+  norm: "layer"
+
+train_cfg:
+  ckpt_dir: 'path_to_log/carrada/'
+  n_epoch: 500
+  batch_size: 8
+  accumulate_grad: 1
+  lr: 0.001
+  lr_step: 20
+  loss_step: 100
+  val_step: 2000
+  viz_step: 4000
+  loss: 'wce_w10sdice'
+  transformations: "hflip, vflip"
+  norm_type: 'tvt'
+  shuffle: true

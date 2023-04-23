@@ -1,0 +1,124 @@
+config_name: 'record'
+encoder_config:
+  in_conv:
+    type: conv
+    in_channels: null
+    out_channels: 32
+    stride: 1
+    use_norm: true
+  ir_block1:
+    type: inverted_residual
+    num_block: 1
+    in_channels: 32
+    out_channels: 16
+    stride: 1
+    expansion_factor: 1
+    use_norm: true
+  ir_block2:
+    type: inverted_residual
+    num_block: 3
+    in_channels: 16
+    out_channels: 32
+    stride: 2
+    expansion_factor: 4
+    use_norm: true
+  bottleneck_lstm1:
+    type: bottleneck_lstm
+    num_block: 1
+    in_channels: 32
+    out_channels: 32
+    stride: 1
+    use_norm: true
+  ir_block3:
+    type: inverted_residual
+    num_block: 3
+    in_channels: 32
+    out_channels: 64
+    stride: 2
+    expansion_factor: 4
+    use_norm: true
+  bottleneck_lstm2:
+    type: bottleneck_lstm
+    num_block: 1
+    in_channels: 64
+    out_channels: 64
+    stride: 1
+    use_norm: true
+  ir_block4:
+    type: inverted_residual
+    num_block: 3
+    in_channels: 64
+    out_channels: 128
+    stride: 2
+    expansion_factor: 4
+    use_norm: true
+
+decoder_config:
+  conv_transpose1:
+    type: conv_transpose
+    kernel_size: 3
+    in_channels: 128
+    out_channels: 128
+    stride: 2
+    padding: 1
+    output_padding: 1
+    use_norm: false
+  conv_skip1:
+    type: inverted_residual
+    num_block: 1
+    # Skip connection 1 here: add output of second LSTM with the last up sampled feature maps
+    in_channels: 192  # 128 (# out_channels conv_transpose1) + 64 (# out channels bottleneck_lstm2)
+    out_channels: 64
+    stride: 1
+    expansion_factor: 1
+    use_norm: true
+  conv_transpose2:
+    type: conv_transpose
+    kernel_size: 3
+    in_channels: 64
+    out_channels: 64
+    stride: 2
+    padding: 1
+    output_padding: 1
+    use_norm: false
+  conv_skip2:
+    type: inverted_residual
+    num_block: 1
+    # Skip connection 2 here: add output of first LSTM with the previous up sampled feature maps
+    in_channels: 96 # 64 (# out_channels conv_transpose2) + 32 (# channels bottleneck_lstm1)
+    out_channels: 32
+    stride: 1
+    expansion_factor: 1
+    use_norm: true
+  conv_transpose3:
+    type: conv_transpose
+    kernel_size: 3
+    in_channels: 32
+    out_channels: 32
+    stride: 2
+    padding: 1
+    output_padding: 1
+    use_norm: false
+  conv_skip3:
+    type: inverted_residual
+    num_block: 1
+    in_channels: 32
+    out_channels: 16
+    stride: 1
+    expansion_factor: 1
+    use_norm: true
+  # Classification head
+  conv_head1:
+    type: conv
+    in_channels: 16
+    out_channels: 16
+    stride: 1
+    use_norm: true
+  conv_head2:
+    type: conv2d
+    in_channels: 16
+    out_channels: null
+    kernel_size: 1
+    stride: 1
+    padding: 0
+    use_norm: false

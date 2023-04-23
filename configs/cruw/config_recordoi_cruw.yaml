@@ -1,0 +1,122 @@
+version: 1.0
+
+dataset_cfg:
+  dataset_name: 'ROD2021'
+  docker: false
+  base_root: 'path_to_dataset/CRUW/ROD2021'
+  data_root: 'path_to_dataset/CRUW/ROD2021/sequences'
+  anno_root: 'path_to_dataset/CRUW/ROD2021/annotations'
+  data_dir: 'path_to_prepared_data'
+  anno_ext: '.txt'
+  train:
+    subdir: train
+    seqs:
+      - 2019_04_09_BMS1000
+      - 2019_04_09_PMS1001
+      - 2019_04_30_MLMS002
+      - 2019_04_30_PM2S003
+      - 2019_05_09_MLMS003
+      - 2019_05_23_PM1S013
+      - 2019_05_29_BCMS000
+      - 2019_05_29_PCMS005
+      - 2019_09_29_ONRD002
+      - 2019_04_09_BMS1001
+      - 2019_04_09_PMS2000
+      - 2019_04_30_PBMS002
+      - 2019_04_30_PM2S004
+      - 2019_05_09_PBMS004
+      - 2019_05_23_PM1S014
+      - 2019_05_29_BM1S016
+      - 2019_05_29_PM2S015
+      - 2019_09_29_ONRD006
+      - 2019_04_09_BMS1002
+      - 2019_04_09_PMS3000
+      - 2019_04_30_PBMS003
+      - 2019_05_09_BM1S008
+      - 2019_05_09_PCMS002
+      - 2019_05_23_PM1S015
+      - 2019_05_29_BM1S017
+      - 2019_05_29_PM3S000
+      - 2019_09_29_ONRD011
+      - 2019_04_09_CMS1002
+      - 2019_04_30_MLMS000
+      - 2019_04_30_PCMS001
+      - 2019_05_09_CM1S004
+      - 2019_05_23_PM1S012
+      - 2019_05_23_PM2S011
+      - 2019_05_29_PBMS007
+      - 2019_09_29_ONRD001
+      - 2019_09_29_ONRD013
+  valid:
+    subdir: train
+    seqs:
+      - 2019_04_09_PMS1000
+      - 2019_04_30_MLMS001
+      - 2019_05_29_MLMS006
+      - 2019_09_29_ONRD005
+  test:
+    subdir: 'test'
+  demo:
+    subdir: 'demo'
+  mean_cplx: [-3.19201617e-06, -1.05546117e-05]
+  std_cplx: [0.06594299, 0.06600033]
+  mean_ampl: 0.04367220899658192
+  std_ampl: 0.08244549426031758
+
+model_cfg:
+  name: 'RECORD-OI'
+  backbone_pth: 'path_to_project/models/configs/record_cruw.yaml'
+  width_mult: 1.0
+  sensor_config: 'sensor_config_rod2021'
+  in_channels: 8
+  n_chirps: 4
+  nb_classes: 3
+  norm: 'layer'
+  max_dets: 20
+  peak_thres: 0.3
+  ols_thres: 0.3
+
+confmap_cfg:
+  confmap_sigmas:
+    pedestrian: 15
+    cyclist: 20
+    car: 30
+  confmap_sigmas_interval:
+    pedestrian: [5, 15]
+    cyclist: [8, 20]
+    car: [10, 30]
+  confmap_length:
+    pedestrian: 1
+    cyclist: 2
+    car: 3
+
+train_cfg:
+  ckpt_dir: 'path_to_logs/rod2021/'
+  n_epoch: 100
+  batch_size: 8
+  accumulate_grad: 2
+  lr: 0.0003
+  optimizer: 'adam'
+  scheduler: 'exp'
+  loss: 'bce'
+  alpha_loss: 0.5
+  win_size: 32
+  train_step: 1
+  train_stride: 8
+  use_ampl: false
+  normalize: false
+  train_log_step: 1000
+  val_log_step: 100
+  test_log_step: 200
+  aug:
+    mirror: 0.5
+    reverse: 0.5
+    gaussian: 0.0
+  
+test_cfg:
+  test_step: 1
+  test_stride: 1
+  rr_min: 1.0  # min radar range
+  rr_max: 20.0  # max radar range
+  ra_min: -60.0  # min radar angle
+  ra_max: 60.0  # max radar angle

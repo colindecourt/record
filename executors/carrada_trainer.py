@@ -348,7 +348,7 @@ class CarradaExecutor(pl.LightningModule):
             
         }
 
-        self.log_dict(metrics=test_results_log, on_epoch=True)
+        self.log_dict(test_results_log, on_epoch=True)
         self.log(name='hp/test_rd_miou', value=test_results['range_doppler']['miou'], on_epoch=True)
         self.log(name="hp/test_ra_miou", value=test_results['range_angle']['miou'], on_epoch=True)
         self.rd_metrics.reset()

@@ -42,7 +42,7 @@ if model_name == 'RECORD-RD-OI':
     dataset_loader = CarradaDatasetRangeDopplerOnline
 elif model_name == 'RECORD-RA-OI':
     dataset_loader = CarradaDatasetRangeAngleOnline
-elif model_name in ('MV-RECORD-S-OI'):
+elif model_name in ('MV-RECORD-OI'):
     dataset_loader = CarradaDatasetOnline
 else:
     raise ValueError
@@ -94,7 +94,7 @@ run_dir = logger.experiment.log_dir
 config['train_cfg']['run_dir'] = run_dir
 
 # Load Pytorch Lightning models
-if model_name in ('MV-RECORD-OI', 'MV-RECORD-S-OI'):
+if model_name == 'MV-RECORD-OI':
     from executors import MVRECORDOIExecutor as Model
     model = Model(config, model=model_instance)
     metric_to_monitor = 'val_metrics/global_prec'

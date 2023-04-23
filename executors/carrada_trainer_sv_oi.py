@@ -126,7 +126,7 @@ class CarradaExecutorSVOI(CarradaExecutorSV):
         outputs = self.forward(data)
 
         # Compute metrics
-        self.metrics.add_batch(torch.argmax(mask[:, :, 0], axis=1).cpu(),
+        self.metrics.add_batch(torch.argmax(mask, axis=1).cpu(),
                                torch.argmax(outputs, axis=1).cpu())
 
     def on_test_epoch_end(self):

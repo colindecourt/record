@@ -12,10 +12,11 @@ ENV NVIDIA_DRIVER_CAPABILITIES=all
 
 WORKDIR ./record
 
+RUN git clone https://github.com/yizhou-wang/cruw-devkit.git
 RUN pip install ./cruw-devkit/
 RUN pip install .
 
 RUN python ./ops/config_paths.py --configs_path $PWD/configs/ --backbone_path $PWD/models/configs/ \
     --ckpt_path /home/logs/ --rod_base_root /home/datasets/ROD2021/ \
-    --rod_data /home/datasets/cruw_prepared/ --carrada_base_root /home/datasets/Carrada/
+    --rod_data /home/datasets/cruw_prepared/ --carrada_base_root /home/datasets/Carrada/ --docker
 

@@ -52,7 +52,7 @@ if model_name == 'MV-RECORD-OI':
     from executors import MVRECORDOIExecutor as Model
     model = Model(config_dict, model=model_instance)
     metric_to_monitor = 'val_metrics/global_prec'
-elif model_name in ('RECORD-OI-RD', 'RECORD-OI-RA'):
+elif model_name in ('RECORD-RD-OI', 'RECORD-RA-OI'):
     from executors import SVRECORDOIExecutor as Model
     model = Model(config_dict, model=model_instance, view=model_cfg['view'])
     metric_to_monitor = 'val_metrics/rd_prec' if model_cfg['view'] == 'range_doppler' else 'val_metrics/ra_prec'
@@ -85,8 +85,8 @@ for _, data in enumerate(seq_dataloader):
                                     'dense',
                                     path_to_frames,
                                     process_signal=True,
-                                    n_frames=n_frames, add_temp=False))
-test_dataloader = DataLoader(ConcatDataset(all_datasets), batch_size=train_cfg['batch_size'],
+                                    n_frames=1, add_temp=False))
+test_dataloader = DataLoader(ConcatDataset(all_datasets), batch_size=1,
                              shuffle=False, num_workers=4)
 
 trainer.test(model, dataloaders=test_dataloader, ckpt_path=ckpt_path)

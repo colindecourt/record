@@ -52,7 +52,7 @@ There is no required pre-processing steps for CARRADA dataset (except to [downlo
 ## Installation
 
 ### Using Docker
-We recommend to use Docker to run and eval the models. We provide a [Dockerfile](Dockerfile). 
+We **strongly** recommend to use Docker to run and eval the models. We provide a [Dockerfile](Dockerfile). 
 First, clone the repository: 
 ```commandline
 git clone https://github.com/colindecourt/record.git
@@ -63,8 +63,16 @@ Build the docker image:
 docker build . -t "record:1.0"
 ```
 
-Train models
-TODO
+Run a container
+```commandline
+sudo docker run --network=host --ipc=host -d -it --gpus all --name record -v <path_to_carrada>:/home/datasets/Carrada -v <path_to_rod2021>:/home/datasets/ROD2021 -v <path_to_logs>:/home/logs -v <path_to_prepared_data>:/home/datasets/cruw_prepared record:1.0 sleep infinity
+```
+
+Start a bash session in the container
+```commandline
+sudo docker exec -it record bash
+```
+You should be able to run and eval models according to the instructions bellow (see [training section](#train-models)).
 
 ### Without Docker
 
@@ -228,7 +236,7 @@ To evaluate *buffer* models on CARRADA dataset, run:
 
 ```commandline
 python eval_carrada.py --config ./configs/carrada/config_<model_name>.yaml \
-                       --log_dir --log_dir <path_to_logs>/carrada \
+                       --log_dir <path_to_logs>/carrada \
                        --version version_<i> \ # the version to evaluate, default is 'version_0'
                        --ckpt <path_to_logs>/<dataset_name>/<model_name>/version_<i>/<ckpt> \
 ```

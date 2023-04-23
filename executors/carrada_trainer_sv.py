@@ -257,7 +257,7 @@ class CarradaExecutorSV(pl.LightningModule):
                 'test_metrics/ra_iou_car': test_results['miou_by_class'][3],
             }
 
-        self.log_dict(metrics=test_results_log, on_epoch=True)
+        self.log_dict(test_results_log, on_epoch=True)
         self.log(name='hp/test_dice', value=test_results['dice'], on_epoch=True)
         self.log(name="hp/test_miou", value=test_results['miou'], on_epoch=True)
         self.metrics.reset()

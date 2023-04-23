@@ -1,9 +1,19 @@
 # RECORD- A recurrent CNN for online object detection on raw radar frames
 
 
-Implementation of RECORD model, from the paper *A recurrent CNN for online object detection on raw radar frames*.  
+Implementation of RECORD model, from the paper [*A recurrent CNN for online object detection on raw radar frames*](https://arxiv.org/abs/2212.11172).  
 
 **DISCLAIMER: The code of RECORD can only be used for academic purposes.**
+
+If you find this code useful for your research, please cite our [paper](https://arxiv.org/abs/2212.11172): 
+```bibtex
+@article{decourt2022recurrent,
+  title={A recurrent CNN for online object detection on raw radar frames},
+  author={Decourt, Colin and VanRullen, Rufin and Salle, Didier and Oberlin, Thomas},
+  journal={arXiv preprint arXiv:2212.11172},
+  year={2022}
+}
+```
 
 ## Contents 
 
